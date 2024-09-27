@@ -1,3 +1,6 @@
+import { ClerkProvider,SignInButton,SignOutButton,UserButton} from '@clerk/nextjs'
+
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -24,12 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+      <ClerkProvider 
+      appearance={{
+        variables: {
+           
+        }
+      }}>
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white `}
+        >
+          {children}
+        </body>
     </html>
+      </ClerkProvider>
   );
 }
