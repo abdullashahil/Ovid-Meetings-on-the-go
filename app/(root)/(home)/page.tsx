@@ -1,4 +1,4 @@
-import React from 'react'
+import MeetingListType from '@/components/MeetingListType'
 
 const Home = () => {
   return (
@@ -15,6 +15,8 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <MeetingListType  />
 
     </section>
   )
