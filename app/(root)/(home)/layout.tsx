@@ -1,6 +1,16 @@
 import Sidebar from '@/components/Sidebar'
 import Navbar from '@/components/navbar'
+import { Metadata } from 'next';
 import React, { ReactNode } from 'react'
+
+export const metadata: Metadata = {
+    title: "Ovid",
+    description: "Meetings on the go",
+    icons: {
+      icon: '/icons/logo.svg'
+    }
+  };
+
 
 const HomeLayout = ({ children }: { children: ReactNode }) => {
     return (
