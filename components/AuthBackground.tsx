@@ -1,8 +1,13 @@
 "use client";
 
 import { usePathname } from 'next/navigation';
+import { ReactNode } from 'react';
 
-export default function AuthBackground({ children }) {
+interface AuthBackgroundProps {
+  children: ReactNode;
+}
+
+export default function AuthBackground({ children }: AuthBackgroundProps) {
   const pathname = usePathname();
   const isAuthPage = pathname === '/sign-in' || pathname === '/sign-up';
 
