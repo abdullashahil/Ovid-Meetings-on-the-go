@@ -12,8 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const toast = useToast();
   const router = useRouter();
-  const { endedCalls, upcomingCalls, callRecordings, isLoading } =
-    useGetCalls();
+  const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
 
   const getCalls = () => {
@@ -42,32 +41,29 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchRecordings = async () => {
+      try {
+        const callData = await Promise.all(
+          callRecordings?.map((meeting) =>
+            'queryRecordings' in meeting ? meeting.queryRecordings() : Promise.resolve(null)
+          ) ?? []
+        );
 
+        const recordings = callData
+          .filter((call) => call?.recordings.length > 0)
+          .flatMap((call) => call.recordings);
 
-  // import { Call } from '@stream-io/video-client/dist/src/gen/video/sfu/models/models';
+        setRecordings(recordings);
+      } catch (error) {
+        toast({ title: "Try again later" });
+      }
+    };
 
-  const fetchRecordings = async () => {
-    try {
-      const callData = await Promise.all(
-        (callRecordings as Call[])?.map((meeting: Call) =>
-          typeof meeting.queryRecordings === 'function'
-            ? meeting.queryRecordings()
-            : Promise.resolve(null)
-        ) ?? []
-      );
-  
-      const recordings = callData
-        .filter((call) => call?.recordings?.length > 0)
-        .flatMap((call) => call!.recordings);
-  
-      setRecordings(recordings);
-      
-    } catch (error) {
-      console.error("Failed to fetch recordings", error);
-      toast({ title: "Try again later" });
+    if (type === 'recordings') {
+      fetchRecordings();
     }
-  };
-  
+  }, [type, callRecordings, toast]);
 
   if (isLoading) return <Loader />;
 
@@ -75,7 +71,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const noCallsMessage = getNoCallsMessage();
 
   return (
-    <div className={calls && calls.length > 0 ? "grid grid-cols-1 gap-5 xl:grid-cols-2" : "h-[500px] flex justify-center items-center"}> 
+    <div className={calls && calls.length > 0 ? "grid grid-cols-1 gap-5 xl:grid-cols-2" : "h-[500px] flex justify-center items-center"}>
       {calls && calls.length > 0 ? (
         calls.map((meeting: Call | CallRecording) => (
           <MeetingCard
@@ -88,7 +84,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
                   : '/icons/recordings.svg'
             }
             title={
-              (meeting as Call).state?.custom?.description?.substring(0, 20)||
+              (meeting as Call).state?.custom?.description?.substring(0, 20) ||
               (meeting as CallRecording).filename?.substring(0, 20) ||
               'Personal meeting'
             }
