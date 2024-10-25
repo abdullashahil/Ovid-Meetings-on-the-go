@@ -44,34 +44,30 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
 
 
 
-  useEffect(() => {
-    const fetchRecordings = async () => {
-      try {
-        // const callData = await Promise.all(
-        //   callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
-        // );
+  // import { Call } from '@stream-io/video-client/dist/src/gen/video/sfu/models/models';
 
-        const callData = await Promise.all(
-          callRecordings?.map((meeting) =>
-            'queryRecordings' in meeting ? meeting.queryRecordings() : Promise.resolve(null)
-          ) ?? []
-        );        
+  const fetchRecordings = async () => {
+    try {
+      const callData = await Promise.all(
+        (callRecordings as Call[])?.map((meeting: Call) =>
+          typeof meeting.queryRecordings === 'function'
+            ? meeting.queryRecordings()
+            : Promise.resolve(null)
+        ) ?? []
+      );
   
-        const recordings = callData
-          .filter((call) => call.recordings.length > 0)
-          .flatMap((call) => call.recordings);
+      const recordings = callData
+        .filter((call) => call?.recordings?.length > 0)
+        .flatMap((call) => call!.recordings);
   
-        setRecordings(recordings);
-        
-      } catch {
-        toast({title: "Try again later"})
-      }
-    };
-
-    if (type === 'recordings') {
-      fetchRecordings();
+      setRecordings(recordings);
+      
+    } catch (error) {
+      console.error("Failed to fetch recordings", error);
+      toast({ title: "Try again later" });
     }
-  }, [type, callRecordings, toast]);
+  };
+  
 
   if (isLoading) return <Loader />;
 
