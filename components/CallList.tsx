@@ -47,9 +47,15 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   useEffect(() => {
     const fetchRecordings = async () => {
       try {
+        // const callData = await Promise.all(
+        //   callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
+        // );
+
         const callData = await Promise.all(
-          callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
-        );
+          callRecordings?.map((meeting) =>
+            'queryRecordings' in meeting ? meeting.queryRecordings() : Promise.resolve(null)
+          ) ?? []
+        );        
   
         const recordings = callData
           .filter((call) => call.recordings.length > 0)
