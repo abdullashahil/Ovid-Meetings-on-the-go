@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: "Ovid",
     description: "Meetings on the go",
     icons: {
-      icon: '/icons/logo.svg'
+      icon: '/icons/ovid-header.svg'
     }
   };
 

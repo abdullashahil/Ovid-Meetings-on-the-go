@@ -10,6 +10,7 @@ import { Call } from "@stream-io/video-client/dist/src/gen/video/sfu/models/mode
 import { useToast } from '@/hooks/use-toast'
 import { Textarea } from "./ui/textarea";
 import ReactDatePicker from 'react-datepicker';
+import { Input } from "./ui/input";
 
 
 const initialValues = {
@@ -79,21 +80,21 @@ const MeetingListType = () => {
                 img="/icons/add-meeting.svg"
                 title="New Meeting"
                 description="Start an instant meeting"
-                className="bg-orange-500 text-white"
+                className="bg-theme-1 text-white"
                 handleClick={() => setMeetingState('isInstantMeeting')}
             />
             <HomeCard
                 img="/icons/join-meeting.svg"
                 title="Join Meeting"
                 description="via invitation link"
-                className="bg-blue-800 text-white"
+                className="bg-gray-700 text-white"
                 handleClick={() => setMeetingState('isJoiningMeeting')}
             />
             <HomeCard
                 img="/icons/schedule.svg"
                 title="Schedule Meeting"
                 description="Plan your meeting"
-                className="bg-purple-600 text-white"
+                className="bg-blue-900 text-white"
                 handleClick={() => setMeetingState('isScheduleMeeting')}
             />
             <HomeCard
@@ -162,6 +163,21 @@ const MeetingListType = () => {
                 buttonText="Start meeting"
                 handleClick={createMeeting}
             />
+
+
+            <MeetingModal
+                isOpen={meetingState == 'isJoiningMeeting'}
+                onClose={() => setMeetingState(undefined)}
+                title="Enter the link here"
+                className="text-center"
+                buttonText="Join meeting"
+                handleClick={() => router.push(values.link)}
+            >
+                <Input placeholder="Meeting link"
+                onChange={(e) => setValues({ ...values, link: e.target.value })}
+                className="border-none bg-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
+               />
+            </MeetingModal>
 
         </section>
     )

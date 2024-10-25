@@ -9,7 +9,7 @@ import React from 'react'
 const Sidebar = () => {
     const pathname = usePathname();
     return (
-        <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between bg-blue-900 p-6 pt-28 text-white max-sm:hidden lg:w-[264px]">
+        <section className="sticky left-10 top-28 flex h-fit w-fit flex-col  justify-between bg-theme-3 p-6  text-white max-sm:hidden lg:w-[270px] lg:mr-3 rounded-3xl">
             <div className="flex flex-1 flex-col gap-6">
                 {sideBarLinks.map((link) => {
                     const isActive = pathname === link.route || pathname.startsWith(`${link.route}/`);
@@ -18,13 +18,13 @@ const Sidebar = () => {
                             href={link.route}
                             key={link.label}
                             className={cn(
-                                'flex gap-4 items-center p-4 rounded-lg justify-start',
+                                'flex gap-4 items-center p-4 rounded-lg justify-start text-gray-900',
                                 {
-                                    'bg-blue-500': isActive,
+                                    'bg-theme-2 text-white font-medium': isActive,
                                 }
                             )}
                         >
-                            <Image src={link.imgURL} alt={link.label} width={24} height={24}/>
+                            <Image src={ isActive ? link.imgURL : link.imgURL2 } alt={link.label} width={24} height={24}/>
                             <p>{link.label}</p>
                         </Link>
                     )
