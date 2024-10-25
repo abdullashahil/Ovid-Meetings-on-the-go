@@ -1,5 +1,5 @@
 import Sidebar from '@/components/Sidebar'
-import Navbar from '@/components/navbar'
+import Navbar from '@/components/Navbar'
 import { Metadata } from 'next';
 import React, { ReactNode } from 'react'
 
