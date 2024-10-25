@@ -14,8 +14,11 @@ const config: Config = {
           1: '#23B582',
           2: '#121212',
         },
-        blue: {
-          1: '#0000FF', // Add a valid color code here
+        theme: {
+          1: '#23B582',
+          2: '#121212',
+          3: '#F0F0F0',
+          4: '#125940',
         },
       },
       backgroundImage: {

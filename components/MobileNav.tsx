@@ -15,22 +15,21 @@ const MobileNav = () => {
         <section className='w-full max-w-[264px] '>
             <Sheet>
                 <SheetTrigger asChild>
-                    <Image src='/icons/hamburger.svg' width={36} height={36} alt='Hamburger icon'
+                    <Image src='/icons/hamburger.svg' width={42} height={42} alt='Hamburger icon'
                         className='cursor-pointer sm:hidden' />
                 </SheetTrigger>
                 <SheetContent side='left' className='border-none bg-color-1'>
-                    <Link href='/' className='flex items-center  '>
-                        <Image alt='logo' src='/icons/logo.svg'
+                    <Link href='/sign-in' className='flex items-center  '>
+                        <Image alt='logo' src='/icons/ovid-logo-2.svg'
                             width={32}
                             height={32}
-                            className='max-sm:size-10'
+                            className='max-sm:size-24'
                         /> 
-                        <p className='text-[26px] font-extrabold text-white '>Ovid</p>
                     </Link>
 
                     <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
                         <SheetClose asChild>
-                            <section className=" flex h-full flex-col gap-6 pt-16 text-white">
+                            <section className=" flex h-full flex-col gap-6 pt-10 text-white">
                                 {sideBarLinks.map((item) => {
                                     const isActive = pathname === item.route;
 

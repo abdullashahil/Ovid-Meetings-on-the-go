@@ -8,6 +8,21 @@
   box-sizing: border-box;
 }
 
+.page-with-bg {
+  background-image: url('/icons/bg.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #121212;
+}
+.page-with-bg2 {
+  background-image: url('/icons/bg2.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #121212;
+}
+
 /* ======== stream css overrides ======== */
 .str-video__call-stats {
   max-width: 500px;
@@ -68,7 +83,13 @@
 }
 
 .cl-socialButtonsIconButton {
-  border: 3px solid #565761;
+  background-color: white;
+  /* border: 3px solid #565761; */
+}
+
+.cl-socialButtonsIconButton:hover {
+  background-color: rgb(231, 231, 231);
+  /* border: 3px solid #565761; */
 }
 
 .cl-internal-wkkub3 {
