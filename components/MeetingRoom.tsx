@@ -5,12 +5,11 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { LayoutList, LayoutListIcon, Users } from 'lucide-react';
+import { LayoutList, Users } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import EndCallButton from './EndCallButton';
 import Loader from './Loader';

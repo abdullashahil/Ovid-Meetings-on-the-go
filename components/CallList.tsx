@@ -57,7 +57,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   
         setRecordings(recordings);
         
-      } catch (error) {
+      } catch {
         toast({title: "Try again later"})
       }
     };
@@ -65,7 +65,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
     if (type === 'recordings') {
       fetchRecordings();
     }
-  }, [type, callRecordings]);
+  }, [type, callRecordings, toast]);
 
   if (isLoading) return <Loader />;
 
