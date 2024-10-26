@@ -3,6 +3,7 @@
 import { useGetCalls } from '@/hooks/useGetCalls';
 import { CallRecording } from '@stream-io/node-sdk';
 import { Call } from '@stream-io/video-client/dist/src/gen/video/sfu/models/models';
+// import { Call } from '@stream-io/video-client';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import MeetingCard from './MeetingCard';
