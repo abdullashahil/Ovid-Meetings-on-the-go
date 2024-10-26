@@ -9,15 +9,13 @@ import MeetingCard from './MeetingCard';
 import { Loader } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-type Meeting = Call | CallRecording;
-
 const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const toast = useToast();
   const router = useRouter();
   const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
 
-  const getCalls = (): Meeting[] => {
+  const getCalls = () => {
     switch (type) {
       case 'ended':
         return endedCalls;
@@ -47,17 +45,13 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
     const fetchRecordings = async () => {
       try {
         const callData = await Promise.all(
-          callRecordings?.map((meeting) => {
-            // Check if meeting is a Call and has the queryRecordings method
-            if ('queryRecordings' in meeting) {
-              return meeting.queryRecordings(); // TypeScript will now recognize this method
-            }
-            return Promise.resolve(null);
-          }) ?? []
+          callRecordings?.map((meeting) =>
+            'queryRecordings' in meeting ? meeting.queryRecordings() : Promise.resolve(null)
+          ) ?? []
         );
 
         const recordings = callData
-          .filter((call) => call && call.recordings.length > 0)
+          .filter((call) => call?.recordings.length > 0)
           .flatMap((call) => call.recordings);
 
         setRecordings(recordings);
@@ -79,7 +73,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   return (
     <div className={calls && calls.length > 0 ? "grid grid-cols-1 gap-5 xl:grid-cols-2" : "h-[500px] flex justify-center items-center"}>
       {calls && calls.length > 0 ? (
-        calls.map((meeting: Meeting) => (
+        calls.map((meeting: Call | CallRecording) => (
           <MeetingCard
             key={(meeting as Call).id}
             icon={
