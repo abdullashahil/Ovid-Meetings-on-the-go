@@ -111,9 +111,11 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
           />
         ))
       ) : (
-        // <h1 className="text-xl text-gray-500">{noCallsMessage}</h1>
         <h1 className="text-xl text-gray-500">Hang tight! The recording feature is in the works and will be available soon.</h1>
-      )}
+        
+        // Will be displayed post resolving
+        // <h1 className="text-xl text-gray-500">{noCallsMessage}</h1>
+        )}
     </div>
   );
 };
