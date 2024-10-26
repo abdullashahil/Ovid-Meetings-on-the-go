@@ -11,17 +11,18 @@ import { useToast } from '@/hooks/use-toast';
 
 // Type guard to check if a meeting is of type Call
 const isCall = (meeting: Call | CallRecording): meeting is Call => {
-  return (meeting as Call).state !== undefined; // Assuming 'state' is a unique property of Call
+  // Use a unique property of Call to determine its type
+  return (meeting as Call).id !== undefined; // Adjust this if 'id' is not a valid property
 };
 
 const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const { toast } = useToast();
   const router = useRouter();
   const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
-  
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
 
+  // Get calls based on the type of list being rendered
   const getCalls = () => {
     switch (type) {
       case 'ended':
@@ -35,6 +36,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
     }
   };
 
+  // Get message to display when there are no calls
   const getNoCallsMessage = () => {
     switch (type) {
       case 'ended':
@@ -48,7 +50,6 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useEffect(() => {
     const fetchRecordings = async () => {
       try {
@@ -75,7 +76,6 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   if (isLoading) return <Loader />;
 
   const calls = getCalls();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const noCallsMessage = getNoCallsMessage();
 
   return (
@@ -93,10 +93,8 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
             }
             title={
               isCall(meeting)
-                ? meeting.state?.custom?.description?.substring(0, 20) ||
-                  'Personal meeting'
-                : meeting.filename?.substring(0, 20) ||
-                  'Personal meeting'
+                ? meeting.state?.custom?.description?.substring(0, 20) || 'Personal meeting'
+                : meeting.filename?.substring(0, 20) || 'Personal meeting'
             }
             date={
               isCall(meeting)
