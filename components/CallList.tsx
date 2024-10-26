@@ -13,6 +13,8 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const { toast } = useToast();
   const router = useRouter();
   const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
 
   const getCalls = () => {
@@ -71,6 +73,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   if (isLoading) return <Loader />;
 
   const calls = getCalls();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const noCallsMessage = getNoCallsMessage();
 
   return (
@@ -112,7 +115,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
         ))
       ) : (
         <h1 className="text-xl text-gray-500">Hang tight! The recording feature is in the works and will be available soon.</h1>
-        
+
         // Will be displayed post resolving
         // <h1 className="text-xl text-gray-500">{noCallsMessage}</h1>
         )}
