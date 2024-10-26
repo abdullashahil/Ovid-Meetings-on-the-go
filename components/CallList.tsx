@@ -19,6 +19,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const router = useRouter();
   const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
   
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
 
   const getCalls = () => {
@@ -47,6 +48,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useEffect(() => {
     const fetchRecordings = async () => {
       try {
@@ -73,6 +75,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   if (isLoading) return <Loader />;
 
   const calls = getCalls();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const noCallsMessage = getNoCallsMessage();
 
   return (
