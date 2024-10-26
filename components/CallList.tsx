@@ -45,18 +45,17 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
     const fetchRecordings = async () => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // Under development, need to be resolved
 
-        const callData = await Promise.all(
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-          callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
-        );
+        // const callData = await Promise.all(
+        //   callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
+        // );
   
-        const recordings = callData
-          .filter((call) => call.recordings.length > 0)
-          .flatMap((call) => call.recordings);
+        // const recordings = callData
+        //   .filter((call) => call.recordings.length > 0)
+        //   .flatMap((call) => call.recordings);
   
-        setRecordings(recordings);
+        // setRecordings(recordings);
         
       } catch(error) {
         console.log(error)
@@ -112,7 +111,8 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
           />
         ))
       ) : (
-        <h1 className="text-xl text-gray-500">{noCallsMessage}</h1>
+        // <h1 className="text-xl text-gray-500">{noCallsMessage}</h1>
+        <h1 className="text-xl text-gray-500">Hang tight! The recording feature is in the works and will be available soon.</h1>
       )}
     </div>
   );
