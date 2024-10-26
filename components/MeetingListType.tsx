@@ -1,17 +1,16 @@
-'use client'
+'use client';
 
-import { useState } from "react"
-import HomeCard from "./HomeCard"
+import { useState } from "react";
+import HomeCard from "./HomeCard";
 import { useRouter } from "next/navigation";
 import MeetingModal from "./MeetingModal";
 import { useUser } from "@clerk/clerk-react";
 import { useStreamVideoClient } from "@stream-io/video-react-bindings";
 import { Call } from "@stream-io/video-client/dist/src/gen/video/sfu/models/models";
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/hooks/use-toast';
 import { Textarea } from "./ui/textarea";
 import ReactDatePicker from 'react-datepicker';
 import { Input } from "./ui/input";
-
 
 const initialValues = {
     dateTime: new Date(),
@@ -20,34 +19,32 @@ const initialValues = {
 };
 
 const MeetingListType = () => {
-
     const router = useRouter();
     const { user } = useUser();
     const client = useStreamVideoClient();
-    const { toast } = useToast()
+    const { toast } = useToast();
 
+    const [values, setValues] = useState<{
+        dateTime: Date | null;
+        description: string;
+        link: string;
+    }>(initialValues);
 
-    const [values, setValues] = useState(initialValues);
     const [callDetails, setCallDetails] = useState<Call>();
-
-
-
-    const [meetingState, setMeetingState] = useState<'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | undefined>()
+    const [meetingState, setMeetingState] = useState<'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | undefined>();
 
     const createMeeting = async () => {
         if (!user || !client) return;
         try {
             if (!values.dateTime) {
-                toast({ title: "Please select a date and time" })
+                toast({ title: "Please select a date and time" });
                 return;
             }
-
 
             const id = crypto.randomUUID();
             const call = client.call('default', id);
 
-            const startsAt =
-                values.dateTime.toISOString() || new Date(Date.now()).toISOString();
+            const startsAt = values.dateTime.toISOString();
 
             await call.getOrCreate({
                 data: {
@@ -58,22 +55,21 @@ const MeetingListType = () => {
                 },
             });
 
+            // @ts-expect-error: TypeScript might not recognize the Call type
             setCallDetails(call);
             if (!values.description) {
                 router.push(`/meeting/${call.id}`);
             }
 
-            toast({ title: "Meeting created" })
-
+            toast({ title: "Meeting created" });
         } catch (error) {
-            console.log(error)
-            toast({ title: "Failed to create meeting" })
-
+            console.log(error);
+            toast({ title: "Failed to create meeting" });
         }
+    };
 
-    }
+    const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`;
 
-    const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`
     return (
         <section className='grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4'>
             <HomeCard
@@ -107,7 +103,7 @@ const MeetingListType = () => {
 
             {!callDetails ? (
                 <MeetingModal
-                    isOpen={meetingState == 'isScheduleMeeting'}
+                    isOpen={meetingState === 'isScheduleMeeting'}
                     onClose={() => setMeetingState(undefined)}
                     title="Create meeting"
                     handleClick={createMeeting}
@@ -129,7 +125,7 @@ const MeetingListType = () => {
                         </label>
                         <ReactDatePicker
                             selected={values.dateTime}
-                            onChange={(date) => setValues({ ...values, dateTime: date! })}
+                            onChange={(date: Date | null) => setValues({ ...values, dateTime: date })}
                             showTimeSelect
                             timeFormat="HH:mm"
                             timeIntervals={15}
@@ -141,13 +137,13 @@ const MeetingListType = () => {
                 </MeetingModal>
             ) : (
                 <MeetingModal
-                    isOpen={meetingState == 'isScheduleMeeting'}
+                    isOpen={meetingState === 'isScheduleMeeting'}
                     onClose={() => setMeetingState(undefined)}
                     title="Meeting created"
                     className="text-center"
                     handleClick={() => {
-                         navigator.clipboard.writeText(meetingLink)
-                        toast({title: 'Link copied'})
+                        navigator.clipboard.writeText(meetingLink);
+                        toast({ title: 'Link copied' });
                     }}
                     image="/icons/checked.svg"
                     buttonIcon="/icons/copy.svg"
@@ -156,7 +152,7 @@ const MeetingListType = () => {
             )}
 
             <MeetingModal
-                isOpen={meetingState == 'isInstantMeeting'}
+                isOpen={meetingState === 'isInstantMeeting'}
                 onClose={() => setMeetingState(undefined)}
                 title="Start an instant meeting"
                 className="text-center"
@@ -164,23 +160,22 @@ const MeetingListType = () => {
                 handleClick={createMeeting}
             />
 
-
             <MeetingModal
-                isOpen={meetingState == 'isJoiningMeeting'}
+                isOpen={meetingState === 'isJoiningMeeting'}
                 onClose={() => setMeetingState(undefined)}
                 title="Enter the link here"
                 className="text-center"
                 buttonText="Join meeting"
                 handleClick={() => router.push(values.link)}
             >
-                <Input placeholder="Meeting link"
-                onChange={(e) => setValues({ ...values, link: e.target.value })}
-                className="border-none bg-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
-               />
+                <Input 
+                    placeholder="Meeting link"
+                    onChange={(e) => setValues({ ...values, link: e.target.value })}
+                    className="border-none bg-gray-500 focus-visible:ring-0 focus-visible:ring-offset-0"
+                />
             </MeetingModal>
-
         </section>
-    )
-}
+    );
+};
 
-export default MeetingListType
+export default MeetingListType;
