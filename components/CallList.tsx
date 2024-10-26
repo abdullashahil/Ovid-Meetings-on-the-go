@@ -44,7 +44,11 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   useEffect(() => {
     const fetchRecordings = async () => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         const callData = await Promise.all(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
           callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
         );
   
