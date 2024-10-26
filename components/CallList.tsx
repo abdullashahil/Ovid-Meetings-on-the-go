@@ -1,18 +1,18 @@
 'use client';
 
-import { useGetCalls } from '@/hooks/useGetCalls';
-import { CallRecording } from '@stream-io/node-sdk';
 import { Call } from '@stream-io/video-client/dist/src/gen/video/sfu/models/models';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { CallRecording } from '@stream-io/node-sdk';
+
+import Loader from './Loader';
+import { useGetCalls } from '@/hooks/useGetCalls';
 import MeetingCard from './MeetingCard';
-import { Loader } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
-  const toast = useToast();
   const router = useRouter();
-  const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
+  const { endedCalls, upcomingCalls, callRecordings, isLoading } =
+    useGetCalls();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
 
   const getCalls = () => {
@@ -43,27 +43,22 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
 
   useEffect(() => {
     const fetchRecordings = async () => {
-      try {
-        const callData = await Promise.all(
-          callRecordings?.map((meeting) =>
-            'queryRecordings' in meeting ? meeting.queryRecordings() : Promise.resolve(null)
-          ) ?? []
-        );
+      const callData = await Promise.all(
+        // @ts-expect-error: queryRecordings method might not be recognized by TypeScript
+        callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
+      );
 
-        const recordings = callData
-          .filter((call) => call?.recordings.length > 0)
-          .flatMap((call) => call.recordings);
+      const recordings = callData
+        .filter((call) => call.recordings.length > 0)
+        .flatMap((call) => call.recordings);
 
-        setRecordings(recordings);
-      } catch {
-        toast({ title: "Try again later" });
-      }
+      setRecordings(recordings);
     };
 
     if (type === 'recordings') {
       fetchRecordings();
     }
-  }, [type, callRecordings, toast]);
+  }, [type, callRecordings]);
 
   if (isLoading) return <Loader />;
 
@@ -71,7 +66,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const noCallsMessage = getNoCallsMessage();
 
   return (
-    <div className={calls && calls.length > 0 ? "grid grid-cols-1 gap-5 xl:grid-cols-2" : "h-[500px] flex justify-center items-center"}>
+    <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
       {calls && calls.length > 0 ? (
         calls.map((meeting: Call | CallRecording) => (
           <MeetingCard
@@ -84,11 +79,13 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
                   : '/icons/recordings.svg'
             }
             title={
-              (meeting as Call).state?.custom?.description?.substring(0, 20) ||
+              // @ts-expect-error: TypeScript might not recognize the state on the Call type
+              (meeting as Call).state?.custom?.description ||
               (meeting as CallRecording).filename?.substring(0, 20) ||
-              'Personal meeting'
+              'No Description'
             }
             date={
+              // @ts-expect-error: TypeScript might not recognize the state on the Call type
               (meeting as Call).state?.startsAt?.toLocaleString() ||
               (meeting as CallRecording).start_time?.toLocaleString()
             }
@@ -108,7 +105,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
           />
         ))
       ) : (
-        <h1 className="text-xl text-gray-500">{noCallsMessage}</h1>
+        <h1 className="text-2xl font-bold text-white">{noCallsMessage}</h1>
       )}
     </div>
   );

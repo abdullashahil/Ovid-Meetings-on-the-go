@@ -2,7 +2,6 @@ import { useUser } from "@clerk/clerk-react";
 import { Call } from "@stream-io/video-client/dist/src/gen/video/sfu/models/models";
 import { useStreamVideoClient } from "@stream-io/video-react-bindings";
 import { useEffect, useState } from "react"
-import { newDate } from "react-datepicker/dist/date_utils";
 
 export const useGetCalls = () => {
   const [calls, setCalls]= useState<Call[]>([]);
@@ -29,6 +28,7 @@ export const useGetCalls = () => {
           }
         });
 
+        // @ts-expect-error: TypeScript might not recognize the Call type
         setCalls(calls);
       } catch (error) {
         console.log(error)
@@ -44,12 +44,16 @@ export const useGetCalls = () => {
   const now = new Date();
   
 const endedCalls = calls.filter(({
+  // @ts-expect-error: TypeScript might not recognize the state on the Call type
+
   state: {startsAt, endedAt}
 } : Call) => {
   return (startsAt && new Date(startsAt) < now || !!endedAt)
 });
 
 const upcomingCalls = calls.filter(({
+// @ts-expect-error: TypeScript might not recognize the state on the Call type
+
   state: { startsAt }
 } : Call) => {
   return (startsAt && new Date(startsAt) > now)
