@@ -71,7 +71,11 @@ const MeetingRoom = () => {
                         {['grid' , 'speaker-left' , 'speaker-right']
                         .map((item, index)=> (
                             <div key={index}>
-                                <DropdownMenuItem className='cursor-pointer ' onClick={()=> { setLayout(item) as CallLayoutType }}>
+                                
+                                <DropdownMenuItem className='cursor-pointer ' onClick={()=> { 
+                                    const layoutItem = item as CallLayoutType; 
+                                    setLayout(layoutItem);  
+                                    }}>
                                     {item}
                                 </DropdownMenuItem>
                             </div>
