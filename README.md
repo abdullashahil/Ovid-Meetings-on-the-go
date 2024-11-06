@@ -1,10 +1,12 @@
 # Ovid - Open Video Chat
 
-Ovid is a simple, user-friendly video chat platform that allows users to connect instantly without the need for sign-up or account creation. With just a click, users can create or join meetings, making online communication seamless and accessible.
+Ovid is a simple, user-friendly video chat platform that allows users to connect instantly. With just a click, users can create, join, or schedule meetings, enjoying a seamless video experience with built-in recording and a network latency strength checker, making online communication smooth and accessible.
+
+- [Deployed link](https://ovid-meetings-on-the-go.vercel.app/)
 
 ## Features
 
-- **Instant Connection**: No sign-up required; users can start chatting immediately.
+- **Instant Connection**: Users can start chatting immediately.
 - **Create Meeting**: Generate a unique meeting link to host a video call.
 - **Join Meeting**: Enter a meeting ID or link to join an ongoing session.
 - **User-Friendly Interface**: Clean and intuitive design for an enhanced user experience.
