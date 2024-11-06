@@ -2,7 +2,7 @@
 
 Ovid is a simple, user-friendly video chat platform that allows users to connect instantly. With just a click, users can create, join, or schedule meetings, enjoying a seamless video experience with built-in recording and a network latency strength checker, making online communication smooth and accessible.
 
-- [Deployed link](https://ovid-meetings-on-the-go.vercel.app/)
+# [Deployed link](https://ovid-meetings-on-the-go.vercel.app/)
 
 ## Features
 
